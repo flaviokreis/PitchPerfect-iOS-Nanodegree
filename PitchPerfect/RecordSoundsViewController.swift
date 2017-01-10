@@ -15,6 +15,8 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
     @IBOutlet weak var recordButton: UIButton!
     @IBOutlet weak var stopRecordingButton: UIButton!
     
+    @IBOutlet weak var mainStackView: UIStackView!
+    
     var audioRecorder: AVAudioRecorder!
     
     override func viewDidLoad() {
@@ -76,6 +78,24 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
         
         recordButton.isEnabled = !recording
         stopRecordingButton.isEnabled = recording
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        
+        coordinator.animate(alongsideTransition: { (context) in
+            var mainStackViewsOrientatcion: UILayoutConstraintAxis;
+            if(UIApplication.shared.statusBarOrientation.isPortrait){
+                mainStackViewsOrientatcion = .vertical
+            }
+            else {
+                mainStackViewsOrientatcion = .horizontal
+            }
+            
+            self.mainStackView.axis = mainStackViewsOrientatcion
+            
+            
+        }, completion: nil)
+        
     }
 }
 
