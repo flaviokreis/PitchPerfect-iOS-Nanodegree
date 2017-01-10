@@ -21,6 +21,14 @@ class PlaySoundsViewController: UIViewController {
     @IBOutlet weak var reverbButton: UIButton!
     @IBOutlet weak var stopButton: UIButton!
     
+    @IBOutlet weak var mainStackView: UIStackView!
+    @IBOutlet weak var buttonsSoundStackView: UIStackView!
+    @IBOutlet weak var line1StackView: UIStackView!
+    @IBOutlet weak var line2StackView: UIStackView!
+    @IBOutlet weak var line3StackView: UIStackView!
+    @IBOutlet weak var stopButtonStackView: UIStackView!
+    
+    
     var recordedAudioURL: URL!
     
     var audioFile:AVAudioFile!
@@ -67,4 +75,33 @@ class PlaySoundsViewController: UIViewController {
         configureUI(.notPlaying)
     }
     
+    func setStackViewAxis(_ isPortrait: Bool){
+        var mainStackViewsOrientatcion: UILayoutConstraintAxis;
+        var buttonsStackViewsOrientatcion: UILayoutConstraintAxis;
+        
+        if(isPortrait){
+            mainStackViewsOrientatcion = .vertical
+            buttonsStackViewsOrientatcion = .horizontal
+        }
+        else {
+            mainStackViewsOrientatcion = .horizontal
+            buttonsStackViewsOrientatcion = .vertical
+        }
+        
+        self.mainStackView.axis = mainStackViewsOrientatcion
+        self.buttonsSoundStackView.axis = mainStackViewsOrientatcion
+        self.stopButtonStackView.axis = mainStackViewsOrientatcion
+        
+        self.line1StackView.axis = buttonsStackViewsOrientatcion
+        self.line2StackView.axis = buttonsStackViewsOrientatcion
+        self.line3StackView.axis = buttonsStackViewsOrientatcion
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        
+        coordinator.animate(alongsideTransition: { (context) in
+            self.setStackViewAxis(UIApplication.shared.statusBarOrientation.isPortrait)
+        }, completion: nil)
+        
+    }
 }
